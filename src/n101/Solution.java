@@ -18,42 +18,19 @@ import java.util.Deque;
  */
 public class Solution {
     public static boolean isSymmetric(TreeNode root) {
-        String preOrderResult = preOrder(root);
-        String postOrderReverseResult = postOrderRev(root);
-        System.out.println(preOrderResult);
-        System.out.println(postOrderReverseResult);
-        return preOrderResult.equals(postOrderReverseResult);
+        if (root == null)
+            return true;
+        return isSymmetricHelper(root.left, root.right);
     }
 
-    private static String postOrderRev(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        postOrder(root, sb);
-        return sb.reverse().toString();
-    }
+    private static boolean isSymmetricHelper(TreeNode left, TreeNode right) {
+        if (left == null && right == null)
+            return true;
 
-    private static void postOrder(TreeNode node, StringBuilder sb) {
-        if (node == null)   return;
+        if (left == null || right == null || left.val != right.val)
+            return false;
 
-        postOrder(node.left, sb);
-        postOrder(node.right, sb);
-        sb.append(node.val);
-    }
-
-    private static String preOrder(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        stack.push(root);
-        while (!stack.isEmpty()){
-            TreeNode tempNode = stack.pop();
-            sb.append(tempNode.val);
-            if (tempNode.left!=null){
-                stack.push(tempNode.left);
-            }
-            if (tempNode.right!=null){
-                stack.push(tempNode.right);
-            }
-        }
-        return sb.toString();
+        return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
     }
 
     public static void main(String[] args) {
